@@ -4,9 +4,7 @@ export class IMenuItem {
   label: string;
   routerLink?;
   items?: IMenuItem[];
-  iconClass?: string;
-  materialIcons?: string;
-  style?: string;
+  src?: string;
 }
 
 @Component({

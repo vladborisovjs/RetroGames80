@@ -13,28 +13,25 @@ export class MainComponent implements OnInit {
     {
       label: 'Asteroids1979',
       routerLink: '/asteroids1979',
-      iconClass: 'material-icons',
-      materialIcons: 'radio_button_checked',
+      src: '../../../assets/asteroids1979/icons/asteroid.png'
     },
     {
       label: 'Flappy Bird',
       routerLink: '/flappybird',
-      iconClass: 'fas fa-database'
     },
     {
       label: 'Neon Snake',
       routerLink: '/neonsnake',
-      iconClass: 'fas fa-file-signature'
+      src: '../../../assets/neon-snake/icons/snake.png'
     },
     {
       label: 'Rock-Paper-Scissors-Spock-Lizard',
       routerLink: '/rpssl',
-      iconClass: 'fas fa-chart-bar'
     },
     {
       label: 'Ping Pong',
       routerLink: '/pingpong',
-      iconClass: 'far fa-clone'
+      src: '../../../assets/ping-pong/icons/ping-pong-icon-18.png'
     },
   ];
   ngOnInit() {
