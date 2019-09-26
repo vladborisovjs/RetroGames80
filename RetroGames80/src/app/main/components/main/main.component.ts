@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {IMenuItem} from '../../navigation/nav-bar/nav-bar.component';
+import {IMenuItem} from '../../../navigation/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-main',
@@ -11,6 +11,11 @@ export class MainComponent implements OnInit {
   constructor() { }
   menuItems: IMenuItem[] = [
     {
+      label: '',
+      routerLink: '/home',
+      src: '../../../assets/home/home.png',
+    },
+    {
       label: 'Asteroids1979',
       routerLink: '/asteroids1979',
       src: '../../../assets/asteroids1979/icons/asteroid.png'
@@ -18,6 +23,7 @@ export class MainComponent implements OnInit {
     {
       label: 'Flappy Bird',
       routerLink: '/flappybird',
+      src: '../../../assets/flappy-bird/icons/flappy-bird.png'
     },
     {
       label: 'Neon Snake',
@@ -27,6 +33,7 @@ export class MainComponent implements OnInit {
     {
       label: 'Rock-Paper-Scissors-Spock-Lizard',
       routerLink: '/rpssl',
+      src: '../../../assets/rock-paper-scissors-spock-lizard/icons/rpssl.png',
     },
     {
       label: 'Ping Pong',

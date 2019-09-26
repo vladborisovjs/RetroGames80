@@ -1,10 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {MainComponent} from './components/main.component';
-import {Asteroids1979Module} from '../asteroids1979/asteroids1979.module';
-import {FlappyBirdModule} from '../flappy-bird/flappy-bird.module';
-import {NeonSnakeModule} from '../neon-snake/neon-snake.module';
-import {RockPaperScissorsSpockLizardModule} from '../rock-paper-scissors-spock-lizard/rock-paper-scissors-spock-lizard.module';
+import {MainComponent} from './components/main/main.component';
+import {StartComponent} from "./components/start/start.component";
 
 const routes: Routes = [
   {
@@ -16,7 +13,11 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'main'
+        redirectTo: 'home'
+      },
+      {
+        path: 'home',
+        component: StartComponent
       },
       {
         path: 'asteroids1979',
