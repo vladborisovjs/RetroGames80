@@ -9,7 +9,7 @@ import {ICardMenuItem} from "../../../navigation/card-menu/card-menu.component";
 export class StartComponent implements OnInit {
   cardMenuItems: ICardMenuItem[] = [
     {
-      label: 'Asteroid1979',
+      label: 'Asteroid 1979',
       routerLink: '/asteroids1979',
       iconClass: '../../../assets/asteroids1979/icons/asteroid.png'
     },
@@ -31,7 +31,7 @@ export class StartComponent implements OnInit {
     {
       label: 'Ping Pong',
       routerLink: '/pingpong',
-      iconClass: '../../../assets/ping-pong/icons/ping-pong-icon-18.png'
+      iconClass: '../../../assets/ping-pong/icons/ping-pong.png'
     },
   ];
 

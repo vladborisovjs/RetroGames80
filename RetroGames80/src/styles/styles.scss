@@ -3,7 +3,6 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/primeicons/primeicons.css";
 @import "../../node_modules/primeng/resources/primeng.min.css";
-
 .default-bg{
   background-color: $yellow-sand;
 }
@@ -23,6 +22,7 @@ html, body, main {
   display: flex;
   flex-direction: column;
   height: 100%;
+  font-family: 'Helvetica', serif;
 }
 
 body {
@@ -41,8 +41,9 @@ main {
 }
 
 nav {
-  background-color: #8C1EFF;
+  background-color: #541388;
 }
+
 .full-height {
   min-height: 0;
   height: 100%;

@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
     {
       label: 'Ping Pong',
       routerLink: '/pingpong',
-      src: '../../../assets/ping-pong/icons/ping-pong-icon-18.png'
+      src: '../../../assets/ping-pong/icons/ping-pong.png'
     },
   ];
   ngOnInit() {

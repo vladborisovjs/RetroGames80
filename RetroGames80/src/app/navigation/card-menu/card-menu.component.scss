@@ -4,13 +4,31 @@
   height: 100%;
 }
 
+.background {
+  background-color: lighten(#ff8480, 20);
+}
+
 .title-box {
   &:hover,  &:focus {
+    border: 5px solid #2DEDE4;
     .title-box-header {
-      background-color: darken($info-alt, 12);
+      background-color: darken(#FD1D53, 20);
     }
     .title-box-content-wrapper{
-      background-color: darken($info-alt, 9);
+      animation-name: stretch;
+      animation-duration: 0.2s;
+      background-color: darken(#ffc107, 2);
+    }
+    @keyframes stretch {
+      0% {
+        transform: scale(.75);
+        border-radius: 100%;
+      }
+      50% {
+      }
+      100% {
+        transform: scale(1);
+      }
     }
   }
   line-height: inherit;
@@ -22,9 +40,9 @@
   -webkit-transition: all .1s ease-in-out;
   transition: all .1s ease-in-out;
   border-radius: 0.25rem;
-  background-color: $info;
+  background-color: #023788;
   .title-box-header {
-    background-color: rgba($info, 0.20);
+    background-color: rgba(#023788, 0.20);
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
     padding: 10px;
