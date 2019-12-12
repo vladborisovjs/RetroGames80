@@ -1,12 +1,11 @@
 @import "../../../styles/variables.scss";
-
 :host{
   height: 100%;
 }
 
-.background {
-  background-color: lighten(#ff8480, 20);
-}
+//.background {
+//  background-color: lighten(#ff3d46, 20);
+//}
 
 .title-box {
   &:hover,  &:focus {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-drag-n-drop',
+  selector: 'app-ping-pong',
   templateUrl: './ping-pong.component.html',
   styleUrls: ['./ping-pong.component.scss']
 })

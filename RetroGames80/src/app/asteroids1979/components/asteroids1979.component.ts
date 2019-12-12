@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-buttons',
+  selector: 'app-asteroids1979',
   templateUrl: './asteroids1979.component.html',
   styleUrls: ['./asteroids1979.component.scss']
 })
