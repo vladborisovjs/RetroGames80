@@ -1,36 +1,41 @@
-<div class="card full-height background">
+<div class="card full-height background border-0">
   <div class="card-body full-height p-0">
     <div class="score-board">
-      <div id="matches">
-        <div id="matchUser1"></div>
-        <div id="matchUser2"></div>
-        <div id="matchUser3"></div>
-
-        <div id="matchComputer1"></div>
-        <div id="matchComputer2"></div>
-        <div id="matchComputer3"></div>
+      <div id="matches" class="d-flex justify-content-between">
+        <div class="matchesUser flex-column ml-3 mt-4">
+          <div id="matchUser1" class="mb-2"></div>
+          <div id="matchUser2" class="mb-2"></div>
+          <div id="matchUser3" class="mb-2"></div>
+        </div>
+        <div class="scores mt-3">
+          <span>{{userScore}}</span>:<span>{{computerScore}}</span>
+        </div>
+        <div class="matchesComputer flex-column mr-3 mt-4">
+          <div id="matchComputer1" class="mb-2"></div>
+          <div id="matchComputer2" class="mb-2"></div>
+          <div id="matchComputer3" class="mb-2"></div>
+        </div>
       </div>
-      <div id="user-label" class="badge">user</div>
-      <div id="computer-label" class="badge">computer</div>
-      <div class="scores">
-        <span id="user-score">0</span>:<span id="computer-score">0</span>
-      </div>
+      <div id="user-label" class="badge"><i class="fas fa-user fa-3x center-vertically"></i></div>
+      <div id="computer-label" class="badge"><i class="fas fa-desktop fa-3x center-vertically"></i></div>
     </div>
-    <div id="result" class="result"><p></p></div>
+    <div class="result"><p>{{result}}</p></div>
     <div>
-      <div id="rock" class="choice">
+      <div id="rock" class="choice" (click)="this.createGameStrategy('rock')">
         <img src="../../../assets/rock-paper-scissors-spock-lizard/icons/rock.png" alt="Rock">
       </div>
-      <div id="paper" class="choice">
+      <div id="paper" class="choice" (click)="this.createGameStrategy('paper')">
         <img src="../../../assets/rock-paper-scissors-spock-lizard/icons/paper.png" alt="Paper">
       </div>
-      <div id="scissors" class="choice">
+      <div id="scissors" class="choice" (click)="this.createGameStrategy('scissors')">
         <img src="../../../assets/rock-paper-scissors-spock-lizard/icons/scissors.png" alt="Scissors">
       </div>
-      <div id="spock" class="choice">
+      <div id="spock" class="choice" (click)="this.createGameStrategy('spock')">
         <img src="../../../assets/rock-paper-scissors-spock-lizard/icons/spock.png" alt="Spock">
       </div>
-      <div id="lizard" class="choice"><img src="../../../assets/rock-paper-scissors-spock-lizard/icons/lizard.png" alt="Lizard"></div>
+      <div id="lizard" class="choice" (click)="this.createGameStrategy('lizard')">
+        <img src="../../../assets/rock-paper-scissors-spock-lizard/icons/lizard.png" alt="Lizard">
+      </div>
     </div>
     <p id="action-message">Make your move</p>
   </div>

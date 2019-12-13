@@ -10,28 +10,12 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   computerPoint: number = 0;
   userVictories: number = 0;
   computerVictories: number = 0;
-  userScore: any;
-  computerScore: any;
-  scoreBoard: any;
-  result: any;
-  rock: any;
-  paper: any;
-  scissors: any;
-  spock: any;
-  lizard: any;
+  userScore: number = 0;
+  computerScore: number = 0;
+  result: string = '';
   constructor() { }
 
   ngOnInit() {
-    this.userScore = document.getElementById("user-score");
-    this.computerScore = document.getElementById("computer-score");
-    this.scoreBoard = document.querySelector(".score-board");
-    this.result = document.querySelector(".result > p");
-    this.rock = document.getElementById("rock");
-    this.paper = document.getElementById("paper");
-    this.scissors = document.getElementById("scissors");
-    this.spock = document.getElementById("spock");
-    this.lizard = document.getElementById("lizard");
-    this.createIconsListener();
   }
 
   getComputerChoice() {
@@ -43,8 +27,8 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
 
   showWin(userChoice) {
     this.userPoint++;
-    this.userScore.innerHTML = this.userPoint;
-    this.result.innerHTML = "USER WIN ROUND";
+    this.userScore = this.userPoint;
+    this.result = "USER WIN ROUND";
 
     document.getElementById(userChoice).classList.add("green-glow");
     setTimeout(
@@ -54,8 +38,8 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
 
   showLose(userChoice) {
     this.computerPoint++;
-    this.computerScore.innerHTML = this.computerPoint;
-    this.result.innerHTML = "COMPUTER WIN ROUND";
+    this.computerScore = this.computerPoint;
+    this.result = "COMPUTER WIN ROUND";
 
     document.getElementById(userChoice).classList.add("red-glow");
     setTimeout(
@@ -64,7 +48,7 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   }
 
   showDraw(userChoice) {
-    this.result.innerHTML = "DRAW ROUND";
+    this.result = "DRAW ROUND";
 
     document.getElementById(userChoice).classList.add("gray-glow");
     setTimeout(
@@ -73,37 +57,33 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   }
 
   createGameMatch() {
-    if (this.userPoint == 16 && this.computerPoint != 16) {
+    if (this.userPoint === 16 && this.computerPoint !== 16) {
       ++this.userVictories;
-
-      if (this.userVictories == 1) {
+      if (this.userVictories === 1) {
         document.getElementById("matchUser1").classList.add("winMatch");
         document.querySelector(".result > p").classList.add("winMatch");
-      } else if (this.userVictories == 2) {
+      } else if (this.userVictories === 2) {
         document.getElementById("matchUser2").classList.add("winMatch");
         document.querySelector(".result > p").classList.add("winMatch");
-      } else if (this.userVictories == 3) {
+      } else if (this.userVictories === 3) {
         document.getElementById("matchUser3").classList.add("winMatch");
       }
-
-      this.result.innerHTML = "USER WIN MATCH";
+      this.result = "USER WIN MATCH";
       setTimeout(() => this.resetScoreBoard(), 1000);
       setTimeout(() => this.sleep(1000), 1);
       console.log(`userVictories: ${this.userVictories}`);
-    } else if (this.userPoint != 16 && this.computerPoint == 16) {
+    } else if (this.userPoint !== 16 && this.computerPoint === 16) {
       ++this.computerVictories;
-
-      if (this.computerVictories == 1) {
+      if (this.computerVictories === 1) {
         document.getElementById("matchComputer1").classList.add("winMatch");
         document.querySelector(".result > p").classList.add("loseMatch");
-      } else if (this.computerVictories == 2) {
+      } else if (this.computerVictories === 2) {
         document.getElementById("matchComputer2").classList.add("winMatch");
         document.querySelector(".result > p").classList.add("loseMatch");
-      } else if (this.computerVictories == 3) {
+      } else if (this.computerVictories === 3) {
         document.getElementById("matchComputer3").classList.add("winMatch");
       }
-
-      this.result.innerHTML = "COMPUTER WIN MATCH";
+      this.result = "COMPUTER WIN MATCH";
       setTimeout(() => this.resetScoreBoard(), 1000);
       setTimeout(() => this.sleep(1000), 1);
       console.log(`computerVictories: ${this.computerVictories}`);
@@ -111,27 +91,25 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   }
 
   createEndGame() {
-    if (this.userVictories == 3 || this.computerVictories == 3) {
+    if (this.userVictories === 3 || this.computerVictories === 3) {
       document.querySelector(".result > p").classList.add("winGame");
-
-      if (this.userVictories == 3 && this.computerVictories != 3) {
-        this.result.innerHTML = "USER WIN GAME";
+      if (this.userVictories === 3 && this.computerVictories !== 3) {
+        this.result = "USER WIN GAME";
         console.log("USER WIN GAME");
-      } else if (this.userVictories != 3 && this.computerVictories == 3) {
-        this.result.innerHTML = "COMPUTER WIN GAME";
+      } else if (this.userVictories !== 3 && this.computerVictories === 3) {
+        this.result = "COMPUTER WIN GAME";
         console.log("COMPUTER WIN GAME");
       }
-
       setTimeout(() => this.newGame(), 1000);
     }
   }
 
   resetScoreBoard() {
-    this.computerScore.innerHTML = 0;
-    this.userScore.innerHTML = 0;
+    this.computerScore = 0;
+    this.userScore = 0;
     this.userPoint = 0;
     this.computerPoint = 0;
-    this.result.innerHTML = "";
+    this.result = "";
 
     document.querySelector(".result > p").classList.remove("winMatch","loseMatch","winGame");
   }
@@ -200,17 +178,8 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
     this.createEndGame();
   }
 
-  createIconsListener() {
-    this.rock.addEventListener("click", () => this.createGameStrategy("rock"));
-    this.paper.addEventListener("click", () => this.createGameStrategy("paper"));
-    this.scissors.addEventListener("click", () => this.createGameStrategy("scissors"));
-    this.spock.addEventListener("click", () => this.createGameStrategy("spock"));
-    this.lizard.addEventListener("click", () => this.createGameStrategy("lizard"));
-  }
-
   sleep(ms) {
     ms += new Date().getTime();
-
     while (new Date() < ms){}
   }
 }
