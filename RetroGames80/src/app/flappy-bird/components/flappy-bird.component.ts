@@ -33,12 +33,11 @@ export class FlappyBirdComponent implements OnInit {
   }
 
   createUserEvents() {
-    document.addEventListener("keyup", (event) => {
-      switch (event.code) {
-        case 'ArrowUp' : return this.moveUp();
-        case 'ArrowDown': return this.moveDown();
-      }
-      return '';
+    document.addEventListener("keyup", () => {
+        this.moveUp();
+    });
+    document.addEventListener("keydown", () => {
+        this.moveDown();
     });
   }
 
@@ -50,7 +49,6 @@ export class FlappyBirdComponent implements OnInit {
 
   moveDown() {
     this.fbService.bird = this.fbService.birdDown;
-    this.yBird += 15;
     this.fbService.flySound.play();
   }
 
