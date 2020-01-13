@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FlappyBirdService} from "../services/flappy-bird.service";
+import {LocalstorageService} from "../../services/localstorage.service";
 
 @Component({
   selector: 'app-flappy-bird',
@@ -12,22 +13,23 @@ export class FlappyBirdComponent implements OnInit {
   private xBird: number = 10;
   private yBird: number  = 150;
   private score: number  = 0;
-  private highScore: number = 0;
+  private highScore;
   private pipe: any[] = [];
-  private GRAVITY: number  = 1.5;
-  constructor(private fbService: FlappyBirdService) {}
+  private readonly gravity: number  = 1.5;
+  constructor(
+    private fbService: FlappyBirdService,
+    private localStorageService: LocalstorageService) {}
 
   ngOnInit() {
     this.canvas = <HTMLCanvasElement>document.getElementById('gameCanvas');
     this.context = this.canvas.getContext("2d");
     this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight - 72;
-
+    this.canvas.height = window.innerHeight - 72; // todo убрать костыль
+    this.highScore = localStorage.getItem('flappyBirdHighScore') ? localStorage.getItem('flappyBirdHighScore') : 0;
     this.pipe[0] = {
       x : this.canvas.width,
       y : 0
     };
-
     this.draw();
     this.createUserEvents();
   }
@@ -62,22 +64,19 @@ export class FlappyBirdComponent implements OnInit {
 
   draw() {
     this.context.drawImage(this.fbService.background,0,0, this.canvas.width, this.canvas.height);
-
     for(let i = 0; i < this.pipe.length; i++) {
       let gap = this.fbService.upperPipe.height+100;
-
       this.context.drawImage(this.fbService.upperPipe, this.pipe[i].x, this.pipe[i].y, this.fbService.upperPipe.width, this.fbService.upperPipe.height);
       this.context.drawImage(this.fbService.lowerPipe,this.pipe[i].x,this.pipe[i].y+gap, this.fbService.lowerPipe.width, this.fbService.lowerPipe.height * 2);
-
       this.pipe[i].x--;
-
+      // create pipes
       if(this.pipe[i].x == this.canvas.width - 250) {
         this.pipe.push({
           x : this.canvas.width,
           y : Math.floor(Math.random()*this.fbService.upperPipe.height)-this.fbService.upperPipe.height
         });
       }
-
+      // check collisions
       if(this.xBird + this.fbService.bird.width >= this.pipe[i].x &&
         this.xBird <= this.pipe[i].x + this.fbService.upperPipe.width &&
         (this.yBird <= this.pipe[i].y + this.fbService.upperPipe.height || this.yBird + this.fbService.bird.height >= this.pipe[i].y+gap)
@@ -85,37 +84,27 @@ export class FlappyBirdComponent implements OnInit {
         || this.yBird < 0) {
         location.reload();
       }
-
+      // check if bird go through gap
       if(this.pipe[i].x == 5){
         this.score++;
         this.fbService.scoreSound.play();
       }
     }
 
-    this.yBird += this.GRAVITY;
-
+    this.yBird += this.gravity;
     this.context.drawImage(this.fbService.field,0,this.canvas.height - this.fbService.field.height, this.canvas.width,this.canvas.height / 4);
     this.context.drawImage(this.fbService.bird, this.xBird, this.yBird);
     this.saveHighScore();
     this.drawScore();
     this.drawHighScore();
-    window.requestAnimationFrame(() => this.draw()); // перерисовка
+    window.requestAnimationFrame(() => this.draw()); // redraw
   }
 
   saveHighScore() {
-    if (this.highScore == null) {
-      this.highScore = 0;
-    }
-
     if(this.score > this.highScore) {
       this.highScore = this.score;
-      // try {
-      //   localStorage.setItem(SAVE_KEY_SCORE,highScore);
-      // } catch (e) {
-      //   if (e == QUOTA_EXCEEDED_ERR) {
-      //     alert('limit exceed');
-      //   }
-      // }
+      localStorage.setItem('flappyBirdHighScore', this.highScore);
+      this.localStorageService.getCurrentUsing();
     }
   }
 
