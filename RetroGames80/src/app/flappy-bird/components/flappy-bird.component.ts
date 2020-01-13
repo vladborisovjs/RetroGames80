@@ -25,7 +25,7 @@ export class FlappyBirdComponent implements OnInit {
     this.context = this.canvas.getContext("2d");
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight - 72; // todo убрать костыль
-    this.highScore = localStorage.getItem('flappyBirdHighScore') ? localStorage.getItem('flappyBirdHighScore') : 0;
+    this.highScore = localStorage.getItem('flappyBirdHighScore') || 0;
     this.pipe[0] = {
       x : this.canvas.width,
       y : 0
