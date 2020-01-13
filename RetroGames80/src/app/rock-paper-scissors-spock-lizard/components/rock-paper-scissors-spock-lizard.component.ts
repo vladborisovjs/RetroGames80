@@ -6,13 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rock-paper-scissors-spock-lizard.component.scss']
 })
 export class RockPaperScissorsSpockLizardComponent implements OnInit {
-  userPoint: number = 0;
-  computerPoint: number = 0;
-  userVictories: number = 0;
-  computerVictories: number = 0;
-  userScore: number = 0;
-  computerScore: number = 0;
-  result: string = '';
+  private userPoint: number = 0;
+  private computerPoint: number = 0;
+  private userVictories: number = 0;
+  private computerVictories: number = 0;
+  private userScore: number = 0;
+  private computerScore: number = 0;
+  private result: string = '';
   constructor() { }
 
   ngOnInit() {
