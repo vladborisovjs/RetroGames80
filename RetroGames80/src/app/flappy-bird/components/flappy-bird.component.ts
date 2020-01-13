@@ -39,6 +39,14 @@ export class FlappyBirdComponent implements OnInit {
     document.addEventListener("keydown", () => {
         this.moveDown();
     });
+    document.addEventListener("mouseup", (event) => {
+        event.preventDefault();
+        this.moveUp();
+    }, false);
+    document.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        this.moveDown();
+    },false);
   }
 
   moveUp() {
