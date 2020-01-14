@@ -6,20 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rock-paper-scissors-spock-lizard.component.scss']
 })
 export class RockPaperScissorsSpockLizardComponent implements OnInit {
-  private userVictories: number;
-  private computerVictories: number;
-  private userScore: number;
-  private computerScore: number;
-  private result: string = '';
-  private readonly userChoice: string = '';
-  private readonly computerChoice: string = '';
+   userVictories: number;
+   computerVictories: number;
+   userScore: number;
+   computerScore: number;
+   result: string = '';
+   userChoice: string = '';
+   computerChoice: string = '';
   constructor() { }
 
   ngOnInit() {
-    this.userVictories = localStorage.getItem('userVictoriesRPSSL') || 0;
-    this.computerVictories = localStorage.getItem('computerVictoriesRPSSL') || 0;
-    this.userScore = localStorage.getItem('userScoreRPSSL') || 0;
-    this.computerScore = localStorage.getItem('computerScoreRPSSL') || 0;
+    this.userVictories = parseInt(localStorage.getItem('userVictoriesRPSSL')) || 0;
+    this.computerVictories = parseInt(localStorage.getItem('computerVictoriesRPSSL')) || 0;
+    this.userScore = parseInt(localStorage.getItem('userScoreRPSSL')) || 0;
+    this.computerScore = parseInt(localStorage.getItem('computerScoreRPSSL')) || 0;
   }
 
   getComputerChoice() {
@@ -28,32 +28,25 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
     return choices[randomNumber];
   }
 
-  showWin(userChoice) {
-    this.userScore++;
-    localStorage.setItem('userScoreRPSSL', this.userScore);
-    this.result = "USER WIN ROUND";
-    document.getElementById(userChoice).classList.add("green-glow");
-    setTimeout(
-      () => document.getElementById(userChoice).classList.remove("green-glow")
-      , 1000);
-  }
-
-  showLose(userChoice) {
-    this.computerScore++;
-    localStorage.setItem('computerScoreRPSSL', this.computerScore);
-    this.result = "COMPUTER WIN ROUND";
-    document.getElementById(userChoice).classList.add("red-glow");
-    setTimeout(
-      () => document.getElementById(userChoice).classList.remove("red-glow")
-      , 1000);
-  }
-
-  showDraw(userChoice) {
-    this.result = "DRAW ROUND";
-    document.getElementById(userChoice).classList.add("gray-glow");
-    setTimeout(
-      () => document.getElementById(userChoice).classList.remove("gray-glow")
-      , 1000);
+  createGameRound(round: string) {
+    switch (round) {
+      case 'userWin': {
+        this.userScore++;
+        localStorage.setItem('userScoreRPSSL', this.userScore.toString());
+        this.result = "USER WIN ROUND";
+        break;
+      }
+      case 'computerWin' : {
+        this.computerScore++;
+        localStorage.setItem('computerScoreRPSSL', this.computerScore.toString());
+        this.result = "COMPUTER WIN ROUND";
+        break;
+      }
+      case 'draw' : {
+        this.result = "DRAW ROUND";
+        break;
+      }
+    }
   }
 
   createGameMatch() {
@@ -62,14 +55,12 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
       localStorage.removeItem('computerScoreRPSSL');
       if (this.userScore === 16 && this.computerScore !== 16) {
         ++this.userVictories;
-        localStorage.setItem('userVictoriesRPSSL', this.userVictories);
+        localStorage.setItem('userVictoriesRPSSL', this.userVictories.toString());
         this.result = "USER WIN MATCH";
-        console.log(`userVictories: ${this.userVictories}`);
       } else if (this.userScore !== 16 && this.computerScore === 16) {
         ++this.computerVictories;
-        localStorage.setItem('computerVictoriesRPSSL', this.computerVictories);
+        localStorage.setItem('computerVictoriesRPSSL', this.computerVictories.toString());
         this.result = "COMPUTER WIN MATCH";
-        console.log(`computerVictories: ${this.computerVictories}`);
       }
       setTimeout(() => this.resetScoreBoard(), 1000);
       setTimeout(() => this.sleep(1000), 1);
@@ -78,7 +69,6 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
 
   createEndGame() {
     if (this.userVictories === 3 || this.computerVictories === 3) {
-      //document.querySelector(".result > p").classList.add("winGame");
       localStorage.removeItem('userVictoriesRPSSL');
       localStorage.removeItem('computerVictoriesRPSSL');
       if (this.userVictories === 3 && this.computerVictories !== 3) {
@@ -117,10 +107,7 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
       case "spokerock":
       case "scissorspaper":
       case "scissorslizard":
-        console.log(`user choice => ${this.userChoice}`);
-        console.log(`computer choice => ${this.computerChoice}`);
-        console.log("USER WIN");
-        this.showWin(this.userChoice);
+        this.createGameRound('userWin');
         break;
       case "scissorsrock":
       case "lizardrock":
@@ -132,20 +119,14 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
       case "rockspoke":
       case "paperscissors":
       case "lizardscissors":
-        console.log(`user choice => ${this.userChoice}`);
-        console.log(`computer choice => ${this.computerChoice}`);
-        console.log("COMPUTER WIN");
-        this.showLose(this.userChoice);
+        this.createGameRound('computerWin');
         break;
       case "scissorsscissors":
       case "rockrock":
       case "paperpaper":
       case "spockspock":
       case "lizardlizard":
-        console.log(`user choice => ${this.userChoice}`);
-        console.log(`computer choice => ${this.computerChoice}`);
-        console.log("DRAW");
-        this.showDraw(this.userChoice);
+        this.createGameRound('draw');
         break;
     }
 

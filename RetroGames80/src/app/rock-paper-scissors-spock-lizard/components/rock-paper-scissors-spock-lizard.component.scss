@@ -1,12 +1,3 @@
-//.center-vertically {
-//  margin: 0;
-//  position: absolute;
-//  top: 50%;
-//  left: 50%;
-//  -ms-transform: translate(-50%, -50%);
-//  transform: translate(-50%, -50%);
-//}
-
 .score-board {
   margin: 20px auto;
   border: 3px solid white;
@@ -24,7 +15,6 @@
   font-size: 14px;
   padding: 20px;
 }
-
 
 #matchUser1 {
   width: 85px;
@@ -103,18 +93,6 @@
   border: 2px solid white;
   border-top: hidden;
   width: 600px;
-}
-
-.winMatch {
-  background: green;
-}
-
-.winGame {
-  background: #FFD700;
-}
-
-.loseMatch {
-  background: red;
 }
 
 .choices {
