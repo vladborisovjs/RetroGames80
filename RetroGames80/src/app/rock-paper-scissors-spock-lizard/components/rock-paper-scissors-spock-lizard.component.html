@@ -3,23 +3,23 @@
     <div class="score-board">
       <div id="matches" class="d-flex justify-content-between">
         <div class="matchesUser flex-column ml-3 mt-4">
-          <div id="matchUser1" class="mb-2"></div>
-          <div id="matchUser2" class="mb-2"></div>
-          <div id="matchUser3" class="mb-2"></div>
+          <div id="matchUser1" class="mb-2" [style.background-color]="userVictories >= 1 ? 'green' : 'transparent'"></div>
+          <div id="matchUser2" class="mb-2" [style.background-color]="userVictories >= 2 ? 'green' : 'transparent'"></div>
+          <div id="matchUser3" class="mb-2" [style.background-color]="userVictories >= 3 ? 'green' : 'transparent'"></div>
         </div>
         <div class="scores mt-3">
           <span>{{userScore}}</span>:<span>{{computerScore}}</span>
         </div>
         <div class="matchesComputer flex-column mr-3 mt-4">
-          <div id="matchComputer1" class="mb-2"></div>
-          <div id="matchComputer2" class="mb-2"></div>
-          <div id="matchComputer3" class="mb-2"></div>
+          <div id="matchComputer1" class="mb-2" [style.background-color]="computerVictories >= 1 ? 'green' : 'transparent'"></div>
+          <div id="matchComputer2" class="mb-2" [style.background-color]="computerVictories >= 2 ? 'green' : 'transparent'"></div>
+          <div id="matchComputer3" class="mb-2" [style.background-color]="computerVictories >= 3 ? 'green' : 'transparent'"></div>
         </div>
       </div>
       <div id="user-label" class="badge"><i class="fas fa-user fa-3x center-vertically"></i></div>
       <div id="computer-label" class="badge"><i class="fas fa-desktop fa-3x center-vertically"></i></div>
     </div>
-    <div class="result"><p>{{result}}</p></div>
+    <div class="result" ><p [style.background-color]="(userVictories === 3 || computerVictories === 3) ? '#FFD700' : 'transparent'">{{result}}</p></div>
     <div>
       <div id="rock" class="choice" (click)="this.createGameStrategy('rock')">
         <img src="../../../assets/rock-paper-scissors-spock-lizard/icons/rock.png" alt="Rock">

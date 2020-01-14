@@ -6,30 +6,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rock-paper-scissors-spock-lizard.component.scss']
 })
 export class RockPaperScissorsSpockLizardComponent implements OnInit {
-  private userPoint: number = 0;
-  private computerPoint: number = 0;
-  private userVictories: number = 0;
-  private computerVictories: number = 0;
-  private userScore: number = 0;
-  private computerScore: number = 0;
+  private userVictories: number;
+  private computerVictories: number;
+  private userScore: number;
+  private computerScore: number;
   private result: string = '';
   constructor() { }
 
   ngOnInit() {
+    this.userVictories = localStorage.getItem('userVictoriesRPSSL') || 0;
+    this.computerVictories = localStorage.getItem('computerVictoriesRPSSL') || 0;
+    this.userScore = localStorage.getItem('userScoreRPSSL') || 0;
+    this.computerScore = localStorage.getItem('computerScoreRPSSL') || 0;
   }
 
   getComputerChoice() {
     const choices = ["rock","paper","scissors","spoke","lizard"];
     const randomNumber = Math.floor(Math.random() * 5);
-
     return choices[randomNumber];
   }
 
   showWin(userChoice) {
-    this.userPoint++;
-    this.userScore = this.userPoint;
+    this.userScore++;
+    localStorage.setItem('userScoreRPSSL', this.userScore);
     this.result = "USER WIN ROUND";
-
     document.getElementById(userChoice).classList.add("green-glow");
     setTimeout(
       () => document.getElementById(userChoice).classList.remove("green-glow")
@@ -37,10 +37,9 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   }
 
   showLose(userChoice) {
-    this.computerPoint++;
-    this.computerScore = this.computerPoint;
+    this.computerScore++;
+    localStorage.setItem('computerScoreRPSSL', this.computerScore);
     this.result = "COMPUTER WIN ROUND";
-
     document.getElementById(userChoice).classList.add("red-glow");
     setTimeout(
       () => document.getElementById(userChoice).classList.remove("red-glow")
@@ -49,7 +48,6 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
 
   showDraw(userChoice) {
     this.result = "DRAW ROUND";
-
     document.getElementById(userChoice).classList.add("gray-glow");
     setTimeout(
       () => document.getElementById(userChoice).classList.remove("gray-glow")
@@ -57,48 +55,34 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   }
 
   createGameMatch() {
-    if (this.userPoint === 16 && this.computerPoint !== 16) {
-      ++this.userVictories;
-      if (this.userVictories === 1) {
-        document.getElementById("matchUser1").classList.add("winMatch");
-        document.querySelector(".result > p").classList.add("winMatch");
-      } else if (this.userVictories === 2) {
-        document.getElementById("matchUser2").classList.add("winMatch");
-        document.querySelector(".result > p").classList.add("winMatch");
-      } else if (this.userVictories === 3) {
-        document.getElementById("matchUser3").classList.add("winMatch");
+    if (this.userScore === 16 || this.computerScore === 16) {
+      localStorage.removeItem('userScoreRPSSL');
+      localStorage.removeItem('computerScoreRPSSL');
+      if (this.userScore === 16 && this.computerScore !== 16) {
+        ++this.userVictories;
+        localStorage.setItem('userVictoriesRPSSL', this.userVictories);
+        this.result = "USER WIN MATCH";
+        console.log(`userVictories: ${this.userVictories}`);
+      } else if (this.userScore !== 16 && this.computerScore === 16) {
+        ++this.computerVictories;
+        localStorage.setItem('computerVictoriesRPSSL', this.computerVictories);
+        this.result = "COMPUTER WIN MATCH";
+        console.log(`computerVictories: ${this.computerVictories}`);
       }
-      this.result = "USER WIN MATCH";
       setTimeout(() => this.resetScoreBoard(), 1000);
       setTimeout(() => this.sleep(1000), 1);
-      console.log(`userVictories: ${this.userVictories}`);
-    } else if (this.userPoint !== 16 && this.computerPoint === 16) {
-      ++this.computerVictories;
-      if (this.computerVictories === 1) {
-        document.getElementById("matchComputer1").classList.add("winMatch");
-        document.querySelector(".result > p").classList.add("loseMatch");
-      } else if (this.computerVictories === 2) {
-        document.getElementById("matchComputer2").classList.add("winMatch");
-        document.querySelector(".result > p").classList.add("loseMatch");
-      } else if (this.computerVictories === 3) {
-        document.getElementById("matchComputer3").classList.add("winMatch");
-      }
-      this.result = "COMPUTER WIN MATCH";
-      setTimeout(() => this.resetScoreBoard(), 1000);
-      setTimeout(() => this.sleep(1000), 1);
-      console.log(`computerVictories: ${this.computerVictories}`);
     }
   }
 
   createEndGame() {
     if (this.userVictories === 3 || this.computerVictories === 3) {
-      document.querySelector(".result > p").classList.add("winGame");
+      //document.querySelector(".result > p").classList.add("winGame");
+      localStorage.removeItem('userVictoriesRPSSL');
+      localStorage.removeItem('computerVictoriesRPSSL');
       if (this.userVictories === 3 && this.computerVictories !== 3) {
         this.result = "USER WIN GAME";
-        console.log("USER WIN GAME");
       } else if (this.userVictories !== 3 && this.computerVictories === 3) {
         this.result = "COMPUTER WIN GAME";
-        console.log("COMPUTER WIN GAME");
       }
       setTimeout(() => this.newGame(), 1000);
     }
@@ -107,23 +91,12 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   resetScoreBoard() {
     this.computerScore = 0;
     this.userScore = 0;
-    this.userPoint = 0;
-    this.computerPoint = 0;
     this.result = "";
-
-    document.querySelector(".result > p").classList.remove("winMatch","loseMatch","winGame");
   }
 
   newGame() {
-    let elements = document.getElementsByClassName('winMatch');
-
-    while (elements.length > 0) {
-      elements[0].classList.remove('winMatch');
-    }
-
     this.resetScoreBoard();
     setTimeout(() => this.sleep(1000), 1);
-
     this.userVictories = 0;
     this.computerVictories = 0;
   }
