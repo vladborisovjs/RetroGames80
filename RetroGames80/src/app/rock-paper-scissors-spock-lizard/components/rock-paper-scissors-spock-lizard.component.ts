@@ -11,6 +11,8 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   private userScore: number;
   private computerScore: number;
   private result: string = '';
+  private readonly userChoice: string = '';
+  private readonly computerChoice: string = '';
   constructor() { }
 
   ngOnInit() {
@@ -21,7 +23,7 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   }
 
   getComputerChoice() {
-    const choices = ["rock","paper","scissors","spoke","lizard"];
+    const choices = ["rock","paper","scissors","spock","lizard"];
     const randomNumber = Math.floor(Math.random() * 5);
     return choices[randomNumber];
   }
@@ -102,9 +104,9 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
   }
 
   createGameStrategy(userChoice) {
-    const computerChoice = this.getComputerChoice();
-
-    switch (userChoice + computerChoice) {
+    this.computerChoice = this.getComputerChoice();
+    this.userChoice = userChoice;
+    switch (this.userChoice + this.computerChoice) {
       case "rockscissors":
       case "rocklizard":
       case "paperrock":
@@ -115,10 +117,10 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
       case "spokerock":
       case "scissorspaper":
       case "scissorslizard":
-        console.log(`user choice => ${userChoice}`);
-        console.log(`computer choice => ${computerChoice}`);
+        console.log(`user choice => ${this.userChoice}`);
+        console.log(`computer choice => ${this.computerChoice}`);
         console.log("USER WIN");
-        this.showWin(userChoice);
+        this.showWin(this.userChoice);
         break;
       case "scissorsrock":
       case "lizardrock":
@@ -130,20 +132,20 @@ export class RockPaperScissorsSpockLizardComponent implements OnInit {
       case "rockspoke":
       case "paperscissors":
       case "lizardscissors":
-        console.log(`user choice => ${userChoice}`);
-        console.log(`computer choice => ${computerChoice}`);
+        console.log(`user choice => ${this.userChoice}`);
+        console.log(`computer choice => ${this.computerChoice}`);
         console.log("COMPUTER WIN");
-        this.showLose(userChoice);
+        this.showLose(this.userChoice);
         break;
       case "scissorsscissors":
       case "rockrock":
       case "paperpaper":
       case "spockspock":
       case "lizardlizard":
-        console.log(`user choice => ${userChoice}`);
-        console.log(`computer choice => ${computerChoice}`);
+        console.log(`user choice => ${this.userChoice}`);
+        console.log(`computer choice => ${this.computerChoice}`);
         console.log("DRAW");
-        this.showDraw(userChoice);
+        this.showDraw(this.userChoice);
         break;
     }
 

@@ -7,8 +7,22 @@
           <div id="matchUser2" class="mb-2" [style.background-color]="userVictories >= 2 ? 'green' : 'transparent'"></div>
           <div id="matchUser3" class="mb-2" [style.background-color]="userVictories >= 3 ? 'green' : 'transparent'"></div>
         </div>
+        <div class="mt-4">
+          <img *ngIf="userChoice === 'rock'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/rock.png" width="50px" height="50px" alt="Rock">
+          <img *ngIf="userChoice === 'paper'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/paper.png" width="50px" height="50px" alt="Paper">
+          <img *ngIf="userChoice === 'lizard'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/lizard.png" width="50px" height="50px" alt="Lizard">
+          <img *ngIf="userChoice === 'scissors'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/scissors.png" width="50px" height="50px" alt="Scissors">
+          <img *ngIf="userChoice === 'spock'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/spock.png" width="50px" height="50px" alt="Spock">
+        </div>
         <div class="scores mt-3">
           <span>{{userScore}}</span>:<span>{{computerScore}}</span>
+        </div>
+        <div class="mt-4">
+          <img *ngIf="computerChoice === 'rock'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/rock.png"  width="50px" height="50px" alt="Rock">
+          <img *ngIf="computerChoice === 'paper'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/paper.png" width="50px" height="50px" alt="Paper">
+          <img *ngIf="computerChoice === 'lizard'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/lizard.png" width="50px" height="50px" alt="Lizard">
+          <img *ngIf="computerChoice === 'scissors'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/scissors.png" width="50px" height="50px" alt="Scissors">
+          <img *ngIf="computerChoice === 'spock'" src="../../../assets/rock-paper-scissors-spock-lizard/icons/spock.png" width="50px" height="50px" alt="Spock">
         </div>
         <div class="matchesComputer flex-column mr-3 mt-4">
           <div id="matchComputer1" class="mb-2" [style.background-color]="computerVictories >= 1 ? 'green' : 'transparent'"></div>
