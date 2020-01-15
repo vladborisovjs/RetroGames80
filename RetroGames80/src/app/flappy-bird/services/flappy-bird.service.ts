@@ -30,8 +30,8 @@ export class FlappyBirdService {
     this.lowerPipe = new Image();
     this.lowerPipe.src = "../../../assets/flappy-bird/img/environment/lowerPipe.png";
     this.flySound = new Audio();
-    this.flySound.src = "../../../assets/flappy-bird/sounds/fly.mp3";
+    this.flySound.src = "../../../assets/flappy-bird/sounds/flap.wav";
     this.scoreSound = new Audio();
-    this.scoreSound.src = "../../../assets/flappy-bird/sounds/score.mp3";
+    this.scoreSound.src = "../../../assets/flappy-bird/sounds/point.wav";
   }
 }
