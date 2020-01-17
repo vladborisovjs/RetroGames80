@@ -136,6 +136,17 @@ export class FlappyBirdComponent implements OnInit {
   };
   gameOver() {
     this.context.drawImage(this.fbService.gameOver,this.canvas.width / 2.5, this.canvas.height / 4, this.canvas.width / 4,this.canvas.height / 2);
+    if (this.score === 10) {
+      this.context.drawImage(this.fbService.coin1,this.canvas.width / 2.3, this.canvas.height / 2, this.canvas.width / 13,this.canvas.height / 8);
+    } else if (this.score === 100) {
+      this.context.drawImage(this.fbService.coin2,this.canvas.width / 2.3, this.canvas.height / 2, this.canvas.width / 13,this.canvas.height / 8);
+    } else if (this.score === 1000) {
+      this.context.drawImage(this.fbService.coin3,this.canvas.width / 2.3, this.canvas.height / 2, this.canvas.width / 13,this.canvas.height / 8);
+    } else if (this.score === 10000) {
+      this.context.drawImage(this.fbService.coin4,this.canvas.width / 2.3, this.canvas.height / 2, this.canvas.width / 13,this.canvas.height / 8);
+    } else {
+      this.context.drawImage(this.fbService.poop,this.canvas.width / 2.4, this.canvas.height / 2, this.canvas.width / 12,this.canvas.height / 8);
+    }
     this.canvas.addEventListener('click', () => {
       location.reload();
     })

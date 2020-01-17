@@ -21,6 +21,7 @@ export class FlappyBirdService {
   coin2: HTMLImageElement;
   coin3: HTMLImageElement;
   coin4: HTMLImageElement;
+  poop: HTMLImageElement;
   flySound: HTMLAudioElement;
   scoreSound: HTMLAudioElement;
   dieSound: HTMLAudioElement;
@@ -61,6 +62,8 @@ export class FlappyBirdService {
     this.coin3.src = "../../../assets/flappy-bird/img/environment/coin3.png";
     this.coin4 = new Image();
     this.coin4.src = "../../../assets/flappy-bird/img/environment/coin4.png";
+    this.poop = new Image();
+    this.poop.src = "../../../assets/flappy-bird/img/environment/poop.png";
     this.flySound = new Audio();
     this.flySound.src = "../../../assets/flappy-bird/sounds/flap.wav";
     this.scoreSound = new Audio();
