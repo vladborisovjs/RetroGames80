@@ -150,15 +150,21 @@ export class FlappyBirdComponent implements OnInit {
   }
 
   drawScore() {
-    this.context.fillStyle = "#000";
-    this.context.font = "20px Verdana";
-    this.context.fillText(`Score ${this.score}`,10,this.canvas.height-20);
+    this.context.fillStyle = "#FFF";
+    this.context.strokeStyle = "#000";
+    this.context.lineWidth = 1;
+    this.context.font = "35px Verdana";
+    this.context.fillText(`${this.score}`,this.canvas.width / 2, 50);
+    this.context.strokeText(`${this.score}`,this.canvas.width / 2,50);
   }
 
   drawHighScore() {
-    this.context.fillStyle = "#000";
-    this.context.font = "20px Verdana";
-    this.context.fillText(`HighScore ${this.highScore}`,this.canvas.width-150,this.canvas.height-20);
+    this.context.fillStyle = "#FFF";
+    this.context.strokeStyle = "#000";
+    this.context.lineWidth = 1;
+    this.context.font = "35px Verdana";
+    this.context.fillText(`High Score ${this.highScore}`,this.canvas.width-250,this.canvas.height-20);
+    this.context.strokeText(`High Score ${this.highScore}`,this.canvas.width-250,this.canvas.height-20);
   }
 
 }
