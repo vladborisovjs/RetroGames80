@@ -76,13 +76,18 @@ export class FlappyBirdComponent implements OnInit {
           y : Math.floor(Math.random()*this.fbService.upperPipe.height)-this.fbService.upperPipe.height
         });
       }
-      // check collisions
+      // check pipe collisions
       if(this.xBird + this.fbService.bird.width >= this.pipe[i].x &&
         this.xBird <= this.pipe[i].x + this.fbService.upperPipe.width &&
-        (this.yBird <= this.pipe[i].y + this.fbService.upperPipe.height || this.yBird + this.fbService.bird.height >= this.pipe[i].y+gap)
-        || this.yBird + this.fbService.bird.height >=  this.canvas.height - this.fbService.field.height
-        || this.yBird < 0) {
-        location.reload();
+        (this.yBird <= this.pipe[i].y + this.fbService.upperPipe.height || this.yBird + this.fbService.bird.height >= this.pipe[i].y+gap)) {
+        this.fbService.hitSound.play();
+        setTimeout(() => {location.reload()}, 400);
+      }
+
+      // check up and down collisions
+      if (this.yBird + this.fbService.bird.height >=  this.canvas.height - this.fbService.field.height || this.yBird < 0) {
+        this.fbService.dieSound.play();
+        setTimeout( () => {location.reload()}, 400);
       }
       // check if bird go through gap
       if(this.pipe[i].x == 5){
