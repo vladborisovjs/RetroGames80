@@ -10,12 +10,18 @@ import {LocalstorageService} from "../../services/localstorage.service";
 export class FlappyBirdComponent implements OnInit {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  private xBird: number = 10;
-  private yBird: number  = 150;
-  private score: number  = 0;
+  private xBird: number;
+  private yBird: number;
+  private score: number;
   private highScore;
   private pipe: any[] = [];
   private readonly gravity: number  = 1.5;
+  private state: number;
+  private readonly states= {
+    GetReady : 0,
+    Game : 1,
+    GameOver : 2
+  };
   constructor(
     private fbService: FlappyBirdService,
     private localStorageService: LocalstorageService) {}
@@ -25,12 +31,16 @@ export class FlappyBirdComponent implements OnInit {
     this.context = this.canvas.getContext("2d");
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight - 72; // todo убрать костыль
+    this.xBird = 10;
+    this.yBird = this.canvas.height / 2;
+    this.score = 0;
     this.highScore = localStorage.getItem('flappyBirdHighScore') || 0;
     this.pipe[0] = {
       x : this.canvas.width,
       y : 0
     };
-    this.draw();
+    this.state = this.states.GetReady;
+    this.drawMainGame();
     this.createUserEvents();
   }
 
@@ -62,7 +72,27 @@ export class FlappyBirdComponent implements OnInit {
     this.fbService.flySound.play();
   }
 
-  draw() {
+  drawMainGame() {
+    if (this.state === 0) {
+      this.getReady();
+    } else if (this.state === this.states.Game) {
+      this.gameOn();
+    } else if (this.state === this.states.GameOver) {
+      this.gameOver();
+    }
+    window.requestAnimationFrame(() => this.drawMainGame()); // redraw
+  }
+
+  getReady() {
+    this.context.drawImage(this.fbService.background,0,0, this.canvas.width, this.canvas.height);
+    this.context.drawImage(this.fbService.field,0,this.canvas.height - this.fbService.field.height, this.canvas.width,this.canvas.height / 4);
+    this.context.drawImage(this.fbService.getReady, this.canvas.width / 2.5, this.canvas.height / 4, this.canvas.width / 4,this.canvas.height / 2);
+    this.context.drawImage(this.fbService.bird, this.xBird, this.yBird);
+    this.canvas.addEventListener('click', () => {
+      this.state = this.states.Game;
+    })
+  };
+  gameOn() {
     this.context.drawImage(this.fbService.background,0,0, this.canvas.width, this.canvas.height);
     for(let i = 0; i < this.pipe.length; i++) {
       let gap = this.fbService.upperPipe.height+100;
@@ -81,13 +111,14 @@ export class FlappyBirdComponent implements OnInit {
         this.xBird <= this.pipe[i].x + this.fbService.upperPipe.width &&
         (this.yBird <= this.pipe[i].y + this.fbService.upperPipe.height || this.yBird + this.fbService.bird.height >= this.pipe[i].y+gap)) {
         this.fbService.hitSound.play();
-        setTimeout(() => {location.reload()}, 400);
+
+        setTimeout(() => {this.state = this.states.GameOver}, 400);
       }
 
       // check up and down collisions
       if (this.yBird + this.fbService.bird.height >=  this.canvas.height - this.fbService.field.height || this.yBird < 0) {
         this.fbService.dieSound.play();
-        setTimeout( () => {location.reload()}, 400);
+        setTimeout( () => {this.state = this.states.GameOver}, 400);
       }
       // check if bird go through gap
       if(this.pipe[i].x == 5){
@@ -102,8 +133,13 @@ export class FlappyBirdComponent implements OnInit {
     this.saveHighScore();
     this.drawScore();
     this.drawHighScore();
-    window.requestAnimationFrame(() => this.draw()); // redraw
-  }
+  };
+  gameOver() {
+    this.context.drawImage(this.fbService.gameOver,this.canvas.width / 2.5, this.canvas.height / 4, this.canvas.width / 4,this.canvas.height / 2);
+    this.canvas.addEventListener('click', () => {
+      location.reload();
+    })
+  };
 
   saveHighScore() {
     if(this.score > this.highScore) {
