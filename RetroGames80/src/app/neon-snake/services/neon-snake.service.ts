@@ -42,17 +42,17 @@ export class NeonSnakeService {
     this.pineappleItem.src = '../../../assets/neon-snake/img/environment/models/pineapple.png';
     this.strawberryItem = new Image();
     this.strawberryItem.src = '../../../assets/neon-snake/img/environment/models/strawberry.png';
-    this.deadSound = new Sound();
+    this.deadSound = new Audio();
     this.deadSound.src = '../../../assets/neon-snake/sounds/dead.mp3';
-    this.downSound = new Sound();
+    this.downSound = new Audio();
     this.downSound.src = '../../../assets/neon-snake/sounds/down.mp3';
-    this.eatSound = new Sound();
+    this.eatSound = new Audio();
     this.eatSound.src = '../../../assets/neon-snake/sounds/eat.mp3';
-    this.leftSound = new Sound();
+    this.leftSound = new Audio();
     this.leftSound.src = '../../../assets/neon-snake/sounds/left.mp3';
-    this.rightSound = new Sound();
+    this.rightSound = new Audio();
     this.rightSound.src = '../../../assets/neon-snake/sounds/right.mp3';
-    this.upSound = new Sound();
+    this.upSound = new Audio();
     this.upSound.src = '../../../assets/neon-snake/sounds/up.mp3';
   }
 }
