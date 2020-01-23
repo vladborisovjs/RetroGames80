@@ -10,7 +10,7 @@ import {LocalstorageService} from "../../services/localstorage.service";
 export class NeonSnakeComponent implements OnInit {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  private readonly box: number = 35;
+  private readonly box: number = 25;
   private direction: string;
   private score: number;
   private highScore;
@@ -25,7 +25,7 @@ export class NeonSnakeComponent implements OnInit {
   ngOnInit() {
     this.canvas = <HTMLCanvasElement>document.getElementById('gameCanvas');
     this.context = this.canvas.getContext("2d");
-    this.canvas.width = window.innerWidth;
+    this.canvas.width = window.innerWidth - 50;
     this.canvas.height = window.innerHeight - 72; // todo убрать костыль
     this.score = 0;
     this.highScore = localStorage.getItem('neonSnakeHighScore') || 0;
@@ -38,8 +38,8 @@ export class NeonSnakeComponent implements OnInit {
       this.nss.pineappleItem
     ];
     this.food = {
-      x :Math.floor(Math.random()*45 + 5) * this.box,
-      y :Math.floor(Math.random()*18 + 3) * this.box
+      x :Math.floor(Math.random()*35 + 5) * this.box,
+      y :Math.floor(Math.random()*16 + 3) * this.box
     };
     this.randomFriut = this.fruits[Math.floor(Math.random() * this.fruits.length)];
     this.snake[0] = {
@@ -54,7 +54,7 @@ export class NeonSnakeComponent implements OnInit {
 
   drawMainGame() {
     this.context.drawImage(this.nss.gridBackground,0,0, this.canvas.width, this.canvas.height);
-    this.context.drawImage(this.randomFriut, this.food.x, this.food.y,100,100);
+    this.context.drawImage(this.randomFriut, this.food.x, this.food.y);
     this.eatFood();
     this.createNewGame();
     this.drawSnake();
@@ -62,12 +62,11 @@ export class NeonSnakeComponent implements OnInit {
     this.drawHighScore();
     this.moveSnake();
     this.saveHighScore();
-    //console.log(`x Змеи=${this.xSnake} y Змеи=${this.ySnake} x еды=${this.food.x} y еды =${this.food.y}`);
+    window.requestAnimationFrame(() => this.drawMainGame());
   }
 
   createUserEvents() {
     document.addEventListener('keydown', (event) => {
-      console.log(event);
       let key = event.code;
       if (key === 'ArrowLeft' && this.direction != "RIGHT") {
         this.direction = "LEFT";
@@ -95,7 +94,8 @@ export class NeonSnakeComponent implements OnInit {
   }
 
   eatFood() {
-    if (this.xSnake == this.food.x && this.ySnake == this.food.y) {
+    if ((this.xSnake <= this.food.x + 25 && this.xSnake >= this.food.x - 25 ) && (this.ySnake <= this.food.y + 25 && this.ySnake >= this.food.y - 25)) {
+      this.randomFriut = this.fruits[Math.floor(Math.random() * this.fruits.length)];
       this.score++;
       this.nss.eatSound.play();
       this.food = {
@@ -117,18 +117,16 @@ export class NeonSnakeComponent implements OnInit {
       this.ySnake < 80 || this.ySnake > this.canvas.height - 50 ||
       this.checkCollision(newHead, this.snake)) {
       this.nss.deadSound.play();
-      clearInterval(setInterval(this.drawMainGame,100));
-      setTimeout(() => location.reload(), 100);
+      setTimeout(() => location.reload(), 1000);
     }
-    window.requestAnimationFrame(() => this.drawMainGame()); // redraw
     this.snake.unshift(newHead);
   }
 
   moveSnake() {
-    if (this.direction == "LEFT") this.xSnake -= this.box / 10;
-    if (this.direction == "UP") this.ySnake -= this.box / 10;
-    if (this.direction == "RIGHT") this.xSnake += this.box / 10;
-    if (this.direction == "DOWN") this.ySnake += this.box / 10;
+    if (this.direction == "LEFT") this.xSnake -= this.box / 2;
+    if (this.direction == "UP") this.ySnake -= this.box / 2;
+    if (this.direction == "RIGHT") this.xSnake += this.box / 2;
+    if (this.direction == "DOWN") this.ySnake += this.box / 2;
   }
 
   drawSnake() {
