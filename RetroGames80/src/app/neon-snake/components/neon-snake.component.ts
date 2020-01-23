@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {NeonSnakeService} from "../services/neon-snake.service";
+import {LocalstorageService} from "../../services/localstorage.service";
 
 @Component({
   selector: 'app-neon-snake',
@@ -6,10 +8,160 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./neon-snake.component.scss']
 })
 export class NeonSnakeComponent implements OnInit {
-
-  constructor() { }
+  private canvas: HTMLCanvasElement;
+  private context: CanvasRenderingContext2D;
+  private readonly box: number = 35;
+  private direction: string;
+  private score: number;
+  private highScore;
+  private snake: any[] = [];
+  private xSnake: number;
+  private ySnake: number;
+  private food: any;
+  private fruits: any[];
+  private randomFriut: any;
+  constructor(private nss: NeonSnakeService, private localStorageService: LocalstorageService) { }
 
   ngOnInit() {
+    this.canvas = <HTMLCanvasElement>document.getElementById('gameCanvas');
+    this.context = this.canvas.getContext("2d");
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight - 72; // todo убрать костыль
+    this.score = 0;
+    this.highScore = localStorage.getItem('neonSnakeHighScore') || 0;
+    this.fruits = [
+      this.nss.appleItem,
+      this.nss.orangeItem,
+      this.nss.cherryItem,
+      this.nss.strawberryItem,
+      this.nss.bananaItem,
+      this.nss.pineappleItem
+    ];
+    this.food = {
+      x :Math.floor(Math.random()*45 + 5) * this.box,
+      y :Math.floor(Math.random()*18 + 3) * this.box
+    };
+    this.randomFriut = this.fruits[Math.floor(Math.random() * this.fruits.length)];
+    this.snake[0] = {
+      x: 9 * this.box,
+      y: 10 * this.box
+    };
+    this.xSnake = this.snake[0].x;
+    this.ySnake = this.snake[0].y;
+    this.createUserEvents();
+    this.drawMainGame();
   }
 
+  drawMainGame() {
+    this.context.drawImage(this.nss.gridBackground,0,0, this.canvas.width, this.canvas.height);
+    this.context.drawImage(this.randomFriut, this.food.x, this.food.y,100,100);
+    this.eatFood();
+    this.createNewGame();
+    this.drawSnake();
+    this.drawScore();
+    this.drawHighScore();
+    this.moveSnake();
+    this.saveHighScore();
+    //console.log(`x Змеи=${this.xSnake} y Змеи=${this.ySnake} x еды=${this.food.x} y еды =${this.food.y}`);
+  }
+
+  createUserEvents() {
+    document.addEventListener('keydown', (event) => {
+      console.log(event);
+      let key = event.code;
+      if (key === 'ArrowLeft' && this.direction != "RIGHT") {
+        this.direction = "LEFT";
+        this.nss.leftSound.play();
+      } else if (key === 'ArrowUp' && this.direction != "DOWN") {
+        this.direction = "UP";
+        this.nss.upSound.play();
+      } else if (key === 'ArrowRight' && this.direction != "LEFT") {
+        this.direction = "RIGHT";
+        this.nss.rightSound.play();
+      } else if (key === 'ArrowDown' && this.direction != "UP") {
+        this.direction = "DOWN";
+        this.nss.downSound.play();
+      }
+    })
+  }
+
+  checkCollision(head,array){
+    for(let i = 0; i < array.length; i++){
+      if(head.x == array[i].x && head.y == array[i].y){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  eatFood() {
+    if (this.xSnake == this.food.x && this.ySnake == this.food.y) {
+      this.score++;
+      this.nss.eatSound.play();
+      this.food = {
+        x :Math.floor(Math.random()*45 + 5) * this.box,
+        y :Math.floor(Math.random()*18 + 3) * this.box
+      };
+    } else {
+      this.snake.pop();
+    }
+  }
+
+  createNewGame() {
+    let newHead = {
+      x : this.xSnake,
+      y : this.ySnake
+    };
+
+    if (this.xSnake < 5 || this.xSnake > this.canvas.width - 90 ||
+      this.ySnake < 80 || this.ySnake > this.canvas.height - 50 ||
+      this.checkCollision(newHead, this.snake)) {
+      this.nss.deadSound.play();
+      clearInterval(setInterval(this.drawMainGame,100));
+      setTimeout(() => location.reload(), 100);
+    }
+    window.requestAnimationFrame(() => this.drawMainGame()); // redraw
+    this.snake.unshift(newHead);
+  }
+
+  moveSnake() {
+    if (this.direction == "LEFT") this.xSnake -= this.box / 10;
+    if (this.direction == "UP") this.ySnake -= this.box / 10;
+    if (this.direction == "RIGHT") this.xSnake += this.box / 10;
+    if (this.direction == "DOWN") this.ySnake += this.box / 10;
+  }
+
+  drawSnake() {
+    for(let i = 0; i < this.snake.length; i++) {
+      if (i == 0) {
+        this.context.drawImage(this.nss.headSnake, this.snake[i].x, this.snake[i].y);
+      } else {
+        this.context.drawImage(this.nss.bodySnake, this.snake[i].x, this.snake[i].y);
+      }
+
+      if (i == this.snake.length - 1) {
+        this.context.drawImage(this.nss.tailSnake, this.snake[i].x, this.snake[i].y);
+      }
+    }
+  }
+
+  saveHighScore() {
+    if(this.score > this.highScore) {
+      this.highScore = this.score;
+      localStorage.setItem('neonSnakeHighScore', this.highScore);
+      this.localStorageService.getCurrentUsing();
+    }
+  }
+
+  drawScore() {
+    this.context.fillStyle = "white";
+    this.context.font = "60px Changa one";
+    this.context.fillText(`${this.score}`, this.canvas.width / 6, this.canvas.height / 12);
+  }
+
+  drawHighScore() {
+    this.context.fillStyle = "white";
+    this.context.font = "60px Changa one";
+    this.context.fillText(`${this.highScore}`, this.canvas.width - this.canvas.width / 12, this.canvas.height / 12);
+  }
 }
