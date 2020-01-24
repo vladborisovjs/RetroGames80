@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NeonSnakeService} from "../services/neon-snake.service";
-import {LocalstorageService} from "../../services/localstorage.service";
+import {LocalstorageService} from "../../shared/services/localstorage.service";
 
 @Component({
   selector: 'app-neon-snake',

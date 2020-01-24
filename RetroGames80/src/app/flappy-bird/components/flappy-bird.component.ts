@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FlappyBirdService} from "../services/flappy-bird.service";
-import {LocalstorageService} from "../../services/localstorage.service";
-import {StatesGameFb} from "../enums/states-game-fb.enum";
+import {LocalstorageService} from "../../shared/services/localstorage.service";
+import {StatesGame} from "../../shared/enums/states-game.enum";
 
 @Component({
   selector: 'app-flappy-bird',
@@ -18,7 +18,7 @@ export class FlappyBirdComponent implements OnInit {
   private pipe: any[] = [];
   private readonly gravity: number  = 1.5;
   private state: number;
-  private states = StatesGameFb;
+  private states = StatesGame;
   constructor(
     private fbService: FlappyBirdService,
     private localStorageService: LocalstorageService) {}
