@@ -20,6 +20,11 @@ export class NeonSnakeComponent implements OnInit {
   private food: any;
   private fruits: any[];
   private randomFriut: any;
+  private head: HTMLImageElement;
+  private body: HTMLImageElement;
+  private tail: HTMLImageElement;
+  private xShift: number;
+  private yShift: number;
   constructor(private nss: NeonSnakeService, private localStorageService: LocalstorageService) { }
 
   ngOnInit() {
@@ -48,6 +53,7 @@ export class NeonSnakeComponent implements OnInit {
     };
     this.xSnake = this.snake[0].x;
     this.ySnake = this.snake[0].y;
+    this.head = this.nss.headSnakeRight;
     this.createUserEvents();
     this.drawMainGame();
   }
@@ -71,15 +77,35 @@ export class NeonSnakeComponent implements OnInit {
       if (key === 'ArrowLeft' && this.direction != "RIGHT") {
         this.direction = "LEFT";
         this.nss.leftSound.play();
+        this.head = this.nss.headSnakeLeft;
+        this.body = this.nss.bodySnakeHorizontal;
+        this.tail = this.nss.tailSnakeRight;
+        this.xShift = 35;
+        this.yShift = 0;
       } else if (key === 'ArrowUp' && this.direction != "DOWN") {
         this.direction = "UP";
         this.nss.upSound.play();
+        this.head = this.nss.headSnakeUp;
+        this.body = this.nss.bodySnakeVertical;
+        this.tail = this.nss.tailSnakeDown;
+        this.xShift = 0;
+        this.yShift = 35;
       } else if (key === 'ArrowRight' && this.direction != "LEFT") {
         this.direction = "RIGHT";
         this.nss.rightSound.play();
+        this.head = this.nss.headSnakeRight;
+        this.body = this.nss.bodySnakeHorizontal;
+        this.tail = this.nss.tailSnakeLeft;
+        this.xShift = -35;
+        this.yShift = 0;
       } else if (key === 'ArrowDown' && this.direction != "UP") {
         this.direction = "DOWN";
         this.nss.downSound.play();
+        this.head = this.nss.headSnakeDown;
+        this.body = this.nss.bodySnakeVertical;
+        this.tail = this.nss.tailSnakeUp;
+        this.xShift = 0;
+        this.yShift = -35;
       }
     })
   }
@@ -94,7 +120,7 @@ export class NeonSnakeComponent implements OnInit {
   }
 
   eatFood() {
-    if ((this.xSnake <= this.food.x + 25 && this.xSnake >= this.food.x - 25 ) && (this.ySnake <= this.food.y + 25 && this.ySnake >= this.food.y - 25)) {
+    if ((this.xSnake <= this.food.x + 30 && this.xSnake >= this.food.x - 30) && (this.ySnake <= this.food.y + 30 && this.ySnake >= this.food.y - 30)) {
       this.randomFriut = this.fruits[Math.floor(Math.random() * this.fruits.length)];
       this.score++;
       this.nss.eatSound.play();
@@ -131,14 +157,14 @@ export class NeonSnakeComponent implements OnInit {
 
   drawSnake() {
     for(let i = 0; i < this.snake.length; i++) {
-      if (i == 0) {
-        this.context.drawImage(this.nss.headSnake, this.snake[i].x, this.snake[i].y);
+      if (i === 0) {
+        this.context.drawImage(this.head, this.snake[i].x, this.snake[i].y);
       } else {
-        this.context.drawImage(this.nss.bodySnake, this.snake[i].x, this.snake[i].y);
+        this.context.drawImage(this.body, this.snake[i].x + this.xShift, this.snake[i].y + this.yShift);
       }
 
-      if (i == this.snake.length - 1) {
-        this.context.drawImage(this.nss.tailSnake, this.snake[i].x, this.snake[i].y);
+      if (i === this.snake.length - 1 && i !== 0) {
+        this.context.drawImage(this.tail, this.snake[i].x + this.xShift * 2, this.snake[i].y + this.yShift * 2);
       }
     }
   }

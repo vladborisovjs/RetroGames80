@@ -4,9 +4,16 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class NeonSnakeService {
-  headSnake: HTMLImageElement;
-  bodySnake: HTMLImageElement;
-  tailSnake: HTMLImageElement;
+  headSnakeLeft: HTMLImageElement;
+  headSnakeRight: HTMLImageElement;
+  headSnakeDown: HTMLImageElement;
+  headSnakeUp: HTMLImageElement;
+  bodySnakeHorizontal: HTMLImageElement;
+  bodySnakeVertical: HTMLImageElement;
+  tailSnakeLeft: HTMLImageElement;
+  tailSnakeRight: HTMLImageElement;
+  tailSnakeUp: HTMLImageElement;
+  tailSnakeDown: HTMLImageElement;
   gridBackground: HTMLImageElement;
   appleItem: HTMLImageElement;
   bananaItem: HTMLImageElement;
@@ -22,12 +29,26 @@ export class NeonSnakeService {
   upSound: HTMLAudioElement;
 
   constructor() {
-    this.headSnake = new Image();
-    this.headSnake.src = '../../../assets/neon-snake/img/character/head.jpg';
-    this.bodySnake = new Image();
-    this.bodySnake.src = '../../../assets/neon-snake/img/character/body.jpg';
-    this.tailSnake = new Image();
-    this.tailSnake.src = '../../../assets/neon-snake/img/character/tail.jpg';
+    this.headSnakeLeft = new Image();
+    this.headSnakeLeft.src = '../../../assets/neon-snake/img/character/head-left.png';
+    this.headSnakeRight = new Image();
+    this.headSnakeRight.src = '../../../assets/neon-snake/img/character/head-right.png';
+    this.headSnakeDown = new Image();
+    this.headSnakeDown.src = '../../../assets/neon-snake/img/character/head-down.png';
+    this.headSnakeUp = new Image();
+    this.headSnakeUp.src = '../../../assets/neon-snake/img/character/head-up.png';
+    this.bodySnakeHorizontal = new Image();
+    this.bodySnakeHorizontal.src = '../../../assets/neon-snake/img/character/body-horizontal.png';
+    this.bodySnakeVertical = new Image();
+    this.bodySnakeVertical.src = '../../../assets/neon-snake/img/character/body-vertical.png';
+    this.tailSnakeLeft = new Image();
+    this.tailSnakeLeft.src = '../../../assets/neon-snake/img/character/tail-left.png';
+    this.tailSnakeRight = new Image();
+    this.tailSnakeRight.src = '../../../assets/neon-snake/img/character/tail-right.png';
+    this.tailSnakeUp = new Image();
+    this.tailSnakeUp.src = '../../../assets/neon-snake/img/character/tail-up.png';
+    this.tailSnakeDown = new Image();
+    this.tailSnakeDown.src = '../../../assets/neon-snake/img/character/tail-down.png';
     this.gridBackground = new Image();
     this.gridBackground.src = '../../../assets/neon-snake/img/environment/background/grid.jpg';
     this.appleItem = new Image();
