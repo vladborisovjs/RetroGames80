@@ -15,6 +15,9 @@ export class NeonSnakeService {
   tailSnakeUp: HTMLImageElement;
   tailSnakeDown: HTMLImageElement;
   gridBackground: HTMLImageElement;
+  gameOver: HTMLImageElement;
+  startOver: HTMLImageElement;
+  controls: HTMLImageElement;
   appleItem: HTMLImageElement;
   bananaItem: HTMLImageElement;
   cherryItem: HTMLImageElement;
@@ -51,6 +54,12 @@ export class NeonSnakeService {
     this.tailSnakeDown.src = '../../../assets/neon-snake/img/character/tail-down.png';
     this.gridBackground = new Image();
     this.gridBackground.src = '../../../assets/neon-snake/img/environment/background/grid.jpg';
+    this.gameOver = new Image();
+    this.gameOver.src = '../../../assets/neon-snake/img/environment/models/game-over.png';
+    this.startOver = new Image();
+    this.startOver.src = '../../../assets/neon-snake/img/environment/models/start-over.png';
+    this.controls = new Image();
+    this.controls.src = '../../../assets/neon-snake/img/environment/models/controls.png';
     this.appleItem = new Image();
     this.appleItem.src = '../../../assets/neon-snake/img/environment/models/apple.png';
     this.bananaItem = new Image();

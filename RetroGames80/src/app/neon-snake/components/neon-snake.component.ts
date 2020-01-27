@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NeonSnakeService} from "../services/neon-snake.service";
 import {LocalstorageService} from "../../shared/services/localstorage.service";
+import {StatesGame} from "../../shared/enums/states-game.enum";
 
 @Component({
   selector: 'app-neon-snake',
@@ -25,6 +26,8 @@ export class NeonSnakeComponent implements OnInit {
   private tail: HTMLImageElement;
   private xShift: number;
   private yShift: number;
+  private state: number;
+  private states = StatesGame;
   constructor(private nss: NeonSnakeService, private localStorageService: LocalstorageService) { }
 
   ngOnInit() {
@@ -54,27 +57,36 @@ export class NeonSnakeComponent implements OnInit {
     this.xSnake = this.snake[0].x;
     this.ySnake = this.snake[0].y;
     this.head = this.nss.headSnakeRight;
+    this.state = this.states.GetReady;
     this.createUserEvents();
     this.drawMainGame();
   }
 
   drawMainGame() {
-    this.context.drawImage(this.nss.gridBackground,0,0, this.canvas.width, this.canvas.height);
-    this.context.drawImage(this.randomFriut, this.food.x, this.food.y);
-    this.eatFood();
-    this.createNewGame();
-    this.drawSnake();
-    this.drawScore();
-    this.drawHighScore();
-    this.moveSnake();
-    this.saveHighScore();
-    window.requestAnimationFrame(() => this.drawMainGame());
+      if (this.state == this.states.GetReady) {
+        this.context.drawImage(this.nss.gridBackground,0,0, this.canvas.width, this.canvas.height);
+        this.context.drawImage(this.nss.controls,this.canvas.width / 2.5, this.canvas.height - this.canvas.height / 4);
+      }
+      else if (this.state == this.states.Game) {
+        this.context.drawImage(this.nss.gridBackground,0,0, this.canvas.width, this.canvas.height);
+        this.context.drawImage(this.randomFriut, this.food.x, this.food.y);
+        this.eatFood();
+        this.createNewGame();
+        this.drawSnake();
+        this.drawScore();
+        this.drawHighScore();
+        this.moveSnake();
+        this.saveHighScore();
+      }
+
+      window.requestAnimationFrame(() => this.drawMainGame());
   }
 
   createUserEvents() {
     document.addEventListener('keydown', (event) => {
       let key = event.code;
       if (key === 'ArrowLeft' && this.direction != "RIGHT") {
+        this.state = this.states.Game;
         this.direction = "LEFT";
         this.nss.leftSound.play();
         this.head = this.nss.headSnakeLeft;
@@ -83,6 +95,7 @@ export class NeonSnakeComponent implements OnInit {
         this.xShift = 35;
         this.yShift = 0;
       } else if (key === 'ArrowUp' && this.direction != "DOWN") {
+        this.state = this.states.Game;
         this.direction = "UP";
         this.nss.upSound.play();
         this.head = this.nss.headSnakeUp;
@@ -91,6 +104,7 @@ export class NeonSnakeComponent implements OnInit {
         this.xShift = 0;
         this.yShift = 35;
       } else if (key === 'ArrowRight' && this.direction != "LEFT") {
+        this.state = this.states.Game;
         this.direction = "RIGHT";
         this.nss.rightSound.play();
         this.head = this.nss.headSnakeRight;
@@ -99,6 +113,7 @@ export class NeonSnakeComponent implements OnInit {
         this.xShift = -35;
         this.yShift = 0;
       } else if (key === 'ArrowDown' && this.direction != "UP") {
+        this.state = this.states.Game;
         this.direction = "DOWN";
         this.nss.downSound.play();
         this.head = this.nss.headSnakeDown;
@@ -143,9 +158,18 @@ export class NeonSnakeComponent implements OnInit {
       this.ySnake < 80 || this.ySnake > this.canvas.height - 50 ||
       this.checkCollision(newHead, this.snake)) {
       this.nss.deadSound.play();
-      setTimeout(() => location.reload(), 1000);
+      this.state = this.states.GameOver;
+      this.context.drawImage(this.nss.gameOver,this.canvas.width / 2.5, this.canvas.height / 4, this.canvas.width / 4,this.canvas.height / 2);
+      // blink effect
+      if (Math.floor(Date.now() / 500) % 2) {
+        this.context.drawImage(this.nss.startOver,this.canvas.width / 2 - 100, this.canvas.height - 100);
+      }
+      this.canvas.addEventListener('click', () => {
+        location.reload();
+      });
     }
     this.snake.unshift(newHead);
+
   }
 
   moveSnake() {
@@ -153,6 +177,10 @@ export class NeonSnakeComponent implements OnInit {
     if (this.direction == "UP") this.ySnake -= this.box / 2;
     if (this.direction == "RIGHT") this.xSnake += this.box / 2;
     if (this.direction == "DOWN") this.ySnake += this.box / 2;
+    if (this.state === this.states.GameOver) {
+      this.xSnake = this.snake[0].x;
+      this.ySnake = this.snake[0].y;
+    }
   }
 
   drawSnake() {

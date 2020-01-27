@@ -70,7 +70,7 @@ export class FlappyBirdComponent implements OnInit {
   }
 
   drawMainGame() {
-    if (this.state === 0) {
+    if (this.state === this.states.GetReady) {
       this.getReady();
     } else if (this.state === this.states.Game) {
       this.gameOn();
